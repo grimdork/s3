@@ -1,10 +1,15 @@
 package cfg
 
 import (
+	"context"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/grimdork/climate/paths"
 )
 
@@ -71,4 +76,35 @@ func Save() error {
 	}
 
 	return os.WriteFile(fn, data, 0600)
+}
+
+// S3Client builder.
+func S3Client(profile, url string) (*s3.Client, error) {
+	s3cfg, err := config.LoadDefaultConfig(
+		context.TODO(),
+		config.WithSharedConfigProfile(profile),
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	if url != "" {
+		fmt.Printf("Using profile %s with API entrypoint %s\n", profile, url)
+		s3cfg.BaseEndpoint = aws.String(url)
+	} else {
+		println("Defaults")
+		s3cfg.BaseEndpoint = aws.String("https://s3.eu-central-1.amazonaws.com")
+		s3cfg.Region = "eu-central-1"
+		cred, err := s3cfg.Credentials.Retrieve(context.Background())
+		if err != nil {
+			return nil, err
+		}
+		fmt.Printf("Access Key: %v\n", cred.AccessKeyID)
+	}
+	return s3.New(s3.Options{}, func(o *s3.Options) {
+		o.UsePathStyle = true
+		o.BaseEndpoint = s3cfg.BaseEndpoint
+		o.Region = s3cfg.Region
+		o.Credentials = s3cfg.Credentials
+	}), nil
 }

@@ -36,5 +36,5 @@ github.com/aws/smithy-go v1.20.1 h1:4SZlSlMr36UEqC7XOyRVb27XMeZubNcBNN+9IgEPIQw=
 github.com/aws/smithy-go v1.20.1/go.mod h1:krry+ya/rV9RDcV/Q16kpu6ypI4K2czasz0NC3qS14E=
 github.com/google/go-cmp v0.5.8 h1:e6P7q2lk1O+qJJb4BtCQXlK8vWEO8V1ZeuEdJNOqZyg=
 github.com/google/go-cmp v0.5.8/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
-github.com/grimdork/climate v0.12.1 h1:SE3d9qTfC+fKnVzkh0qcF4YgSNcbaBA+f2OFGJYbJYs=
-github.com/grimdork/climate v0.12.1/go.mod h1:Z1qOEtko3gCPaRjVptOlUFfDcP2X1ir2JxfGXu3+68s=
+github.com/grimdork/climate v0.13.1 h1:q73rbL4Lm12sHYHnJxRLvXjYvMthTBPmw9JcSEVp1Mo=
+github.com/grimdork/climate v0.13.1/go.mod h1:Z1qOEtko3gCPaRjVptOlUFfDcP2X1ir2JxfGXu3+68s=

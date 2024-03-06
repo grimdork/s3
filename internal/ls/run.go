@@ -5,58 +5,42 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/grimdork/climate/arg"
+	"github.com/grimdork/climate/human"
 	"github.com/grimdork/s3/internal/cfg"
 )
 
 // Run the command.
 func Run(opt *arg.Options) error {
+	profile := "default"
+	if cfg.Config.Default != "" {
+		profile = cfg.Config.Default
+	}
+
 	// Flags
 	o := arg.New("s3 ls")
 	o.SetDefaultHelp(true)
-	def := "default"
-	if cfg.Config.Default != "" {
-		def = cfg.Config.Default
-	}
-	o.SetOption("Config", "p", "profile", "Profile to load.", def, false, arg.VarString, nil)
-	o.SetOption("Config", "u", "url", "URL for the API.", cfg.Config.Profiles[def], false, arg.VarString, nil)
-	o.SetPositional("URI", "Location URIs to list, or blank to list buckets.", "", false, arg.VarStringSlice)
+	o.SetOption("Config", "p", "profile", "Profile to load.", profile, false, arg.VarString, nil)
+	o.SetOption("Config", "u", "url", "URL for the API.", cfg.Config.Profiles[profile], false, arg.VarString, nil)
+	o.SetPositional("PATH", "Bucket/object path to list, or blank to list buckets.", "", false, arg.VarStringSlice)
 	err := o.Parse(opt.Args)
 	if err != nil {
 		return err
 	}
 
-	cfg, err := config.LoadDefaultConfig(
-		context.TODO(),
-		config.WithSharedConfigProfile(o.GetString("profile")),
-	)
+	s3c, err := cfg.S3Client(profile, o.GetString("url"))
 	if err != nil {
-		return err
+		fmt.Printf("Error loading credentials: %s\n", err.Error())
+		return arg.ErrRunCommand
 	}
-
-	base := o.GetString("url")
-	if base != "" {
-		cfg.BaseEndpoint = aws.String(base)
-	} else {
-		println("Defaults")
-		cfg.BaseEndpoint = aws.String("https://s3.eu-central-1.amazonaws.com")
-		cfg.Region = "eu-central-1"
-		cred, err := cfg.Credentials.Retrieve(context.Background())
-		if err != nil {
-			return err
-		}
-		fmt.Printf("Access Key: %v\n", cred.AccessKeyID)
-	}
-	s3c := s3.NewFromConfig(cfg)
 
 	// List S3 compatible buckets using selected profile.
-	uris := o.GetPosStringSlice("URI")
-	if len(uris) == 0 {
+	pathlist := o.GetPosStringSlice("PATH")
+	if len(pathlist) == 0 {
 		result, err := s3c.ListBuckets(context.TODO(), &s3.ListBucketsInput{})
 		if err != nil {
-			fmt.Printf("Couldn't list buckets for your account. Here's why: %v\n", err)
+			fmt.Printf("Couldn't list buckets for your account: %s\n", err.Error())
 			return arg.ErrRunCommand
 		}
 		if len(result.Buckets) == 0 {
@@ -67,6 +51,25 @@ func Run(opt *arg.Options) error {
 			}
 		}
 		return arg.ErrRunCommand
+	}
+
+	for _, path := range pathlist {
+		fmt.Printf("%s:\n", path)
+		result, err := s3c.ListObjectsV2(context.TODO(), &s3.ListObjectsV2Input{
+			Bucket: aws.String(path),
+		})
+		if err != nil {
+			fmt.Printf("Couldn't list objects in bucket: %s\n", err.Error())
+			return arg.ErrRunCommand
+		}
+
+		if len(result.Contents) == 0 {
+			fmt.Println("\tNo objects found.")
+		}
+
+		for _, obj := range result.Contents {
+			fmt.Printf("\t%s\t%s\n", *obj.Key, human.UInt(uint64(*obj.Size), false))
+		}
 	}
 
 	return arg.ErrRunCommand
