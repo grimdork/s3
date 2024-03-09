@@ -26,7 +26,7 @@ jobs:
         id: import_gpg
         uses: crazy-max/ghaction-import-gpg@v6
         with:
-          gpg_private-key: ${{ secrets.GPG_KEY }}
+          gpg_private_key: ${{ secrets.GPG_KEY }}
           passphrase: ${{ secrets.GPG_PASSWORD }}
       -
         name: GPG user IDs
