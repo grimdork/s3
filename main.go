@@ -11,7 +11,7 @@ import (
 	"github.com/grimdork/s3/internal/mb"
 	"github.com/grimdork/s3/internal/rmb"
 	"github.com/grimdork/s3/internal/sdp"
-	"github.com/grimdork/s3/sep"
+	"github.com/grimdork/s3/internal/sep"
 )
 
 const (
