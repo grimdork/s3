@@ -22,7 +22,7 @@ const (
 func main() {
 	opt := arg.New("s3")
 	opt.SetDefaultHelp(true)
-	opt.SetOption(arg.GroupDefault, "v", "version", "Display the version and exit.", false, false, arg.VarBool, nil)
+	opt.SetFlag(arg.GroupDefault, "v", "version", "Display the version and exit.")
 	opt.SetCommand("lp", "List S3 profile entrypoints.", groupCfg, lp.Run, []string{"listprofiles"})
 	opt.SetCommand("sep", "Set the entrypoint for an S3 profile.", groupCfg, sep.Run, []string{"setentrypoint"})
 	opt.SetCommand("sdp", "Set the default S3 profile to use.", groupCfg, sdp.Run, []string{"setdefaultprofile"})
