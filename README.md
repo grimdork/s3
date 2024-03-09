@@ -1,2 +1,2 @@
 # s3
-Simpler s3 commands with support for web protocols.
+Simpler S3 commands with support for web protocols and SSH.

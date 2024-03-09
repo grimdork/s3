@@ -19,10 +19,15 @@ const (
 	groupS3  = "S3"
 )
 
+var (
+	appname = "s3"
+	version = "dev"
+	date    = "undefined"
+)
+
 func main() {
 	opt := arg.New("s3")
 	opt.SetDefaultHelp(true)
-	opt.SetFlag(arg.GroupDefault, "v", "version", "Display the version and exit.")
 	opt.SetCommand("lp", "List S3 profile entrypoints.", groupCfg, lp.Run, []string{"listprofiles"})
 	opt.SetCommand("sep", "Set the entrypoint for an S3 profile.", groupCfg, sep.Run, []string{"setentrypoint"})
 	opt.SetCommand("sdp", "Set the default S3 profile to use.", groupCfg, sdp.Run, []string{"setdefaultprofile"})
@@ -30,6 +35,7 @@ func main() {
 	opt.SetCommand("rmb", "Remove buckets.", groupS3, rmb.Run, nil)
 	opt.SetCommand("ls", "List buckets or contents of buckets.", groupS3, ls.Run, nil)
 	opt.SetCommand("cp", "Copy files, folders, buckets or objects.", groupS3, cp.Run, nil)
+	opt.SetCommand("version", "Display the version and exit.", groupS3, VersionRun, []string{"ver"})
 	err := opt.Parse(os.Args)
 	if err == arg.ErrRunCommand {
 		return
