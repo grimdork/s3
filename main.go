@@ -15,8 +15,9 @@ import (
 )
 
 const (
-	groupCfg = "Configuration"
-	groupS3  = "S3"
+	groupCfg   = "Configuration"
+	groupS3    = "S3"
+	groupOther = "Other"
 )
 
 var (
@@ -35,7 +36,7 @@ func main() {
 	opt.SetCommand("rmb", "Remove buckets.", groupS3, rmb.Run, nil)
 	opt.SetCommand("ls", "List buckets or contents of buckets.", groupS3, ls.Run, nil)
 	opt.SetCommand("cp", "Copy files, folders, buckets or objects.", groupS3, cp.Run, nil)
-	opt.SetCommand("version", "Display the version and exit.", groupS3, VersionRun, []string{"ver"})
+	opt.SetCommand("version", "Display the version and exit.", groupOther, VersionRun, []string{"ver"})
 	err := opt.Parse(os.Args)
 	if err == arg.ErrRunCommand {
 		return
