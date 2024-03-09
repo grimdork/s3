@@ -3,6 +3,9 @@ before:
   hooks:
     - go mod download
 
+env:
+  github_token:${{ secrets.GITHUB_TOKEN }}
+
 builds:
   -
     id: "client"
@@ -41,7 +44,7 @@ archives:
 
 brews:
   -
-    tap:
+    repository:
       owner: grimdork
       name: homebrew-tools
     commit_author:
