@@ -21,10 +21,14 @@ release:
   prerelease: true
 
 archives:
-  - replacements:
-      darwin: Darwin
-      linux: Linux
-      amd64: x86_64
+  - id: s3
+    name_template: >-
+      {{- .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end -}}
     wrap_in_directory: true
     format_overrides:
     - goos: darwin
@@ -49,10 +53,14 @@ brews:
     skip_upload: auto
 
 nfpms:
-  -
-    replacements:
-      darwin: macOS
-      linux: Linux
+  - id: s3
+    file_name_template: >-
+      {{- .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end -}}
     vendor: grimdork.net
     homepage:
     maintainer: Ronny Bangsund <github@grimdork.net>
