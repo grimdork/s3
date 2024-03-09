@@ -3,9 +3,6 @@ before:
   hooks:
     - go mod download
 
-env:
-  - GITHUB_TOKEN=${{ secrets.API_TOKEN }}
-
 builds:
   -
     id: "client"
