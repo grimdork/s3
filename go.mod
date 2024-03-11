@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.25.3
 	github.com/aws/aws-sdk-go-v2/config v1.27.7
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.51.4
-	github.com/grimdork/climate v0.14.0
+	github.com/grimdork/climate v0.14.1
 )
 
 require (
