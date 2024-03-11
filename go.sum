@@ -34,5 +34,5 @@ github.com/aws/aws-sdk-go-v2/service/sts v1.28.4 h1:Ppup1nVNAOWbBOrcoOxaxPeEnSFB
 github.com/aws/aws-sdk-go-v2/service/sts v1.28.4/go.mod h1:+K1rNPVyGxkRuv9NNiaZ4YhBFuyw2MMA9SlIJ1Zlpz8=
 github.com/aws/smithy-go v1.20.1 h1:4SZlSlMr36UEqC7XOyRVb27XMeZubNcBNN+9IgEPIQw=
 github.com/aws/smithy-go v1.20.1/go.mod h1:krry+ya/rV9RDcV/Q16kpu6ypI4K2czasz0NC3qS14E=
-github.com/grimdork/climate v0.14.0 h1:T2uCeXRGmG+Th7LOusMy8waS4VZ2n9XI/zUeuQMZ/dA=
-github.com/grimdork/climate v0.14.0/go.mod h1:Z1qOEtko3gCPaRjVptOlUFfDcP2X1ir2JxfGXu3+68s=
+github.com/grimdork/climate v0.14.1 h1:qwmj4cJOsOORweisetUDc5NWhBSbB69tMzYs0/9KCU4=
+github.com/grimdork/climate v0.14.1/go.mod h1:Z1qOEtko3gCPaRjVptOlUFfDcP2X1ir2JxfGXu3+68s=
